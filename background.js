@@ -1,10 +1,8 @@
 browser.contextMenus.create({
 	id: "yvp",
 	title: "Popup This Video",
-	contexts: [
-		"link"
-	]
-})
+	contexts: ["link"]
+});
 
 browser.contextMenus.onClicked.addListener(contextMenuAction);
 
@@ -28,38 +26,32 @@ function Video(url) {
 	this.url = url;
 	this.message = 'unknown';
 	
-	this.getService = function() {
+	this.getPopOutURL = function() {
 		if (url.toLowerCase().indexOf("youtube.com") > 0) {
-			return "youtube.com";
+			var youtubecom = new Youtubecom(url);
+			return youtubecom.popOut();
 		} else if (url.toLowerCase().indexOf("vimeo.com") > 0) {
-			return "vimeo.com";
+			var vimeo = new Vimeo(url);
+			return vimeo.popOut();
 		} else if (url.toLowerCase().indexOf("vidio.com") > 0) {
-			return "vidio.com";
+			var vidio = new Vidio(url);
+			return vidio.popOut();
 		} else if (url.toLowerCase().indexOf("youtu.be") > 0) {
-			return "youtu.be";
+			var youtube = new Youtube(url);
+			return youtube.popOut();
+		} else if (url.toLowerCase().indexOf("gfycat.com") > 0) {
+			var gfycat = new Gfycat(url);
+			return gfycat.popOut();
+		} else if (url.toLowerCase().indexOf("dailymotion.com") > 0) {
+			var dailymotion = new Dailymotion(url);
+			return dailymotion.popOut();
+		} else if (url.toLowerCase().indexOf("metacafe.com") > 0) {
+			var metacafe = new Metacafe(url);
+			return metacafe.popOut();
 		} else {
 			return "unknown";
 		}
 	};
-
-	this.getPopOutURL = function() {
-		if (this.getService() == "youtube.com") {
-			var youtubecom = new Youtubecom(url);
-			return youtubecom.popOut();
-		} else if (this.getService() == "vimeo.com") {
-			var vimeo = new Vimeo(url);
-			return vimeo.popOut();
-		} else if (this.getService() == "vidio.com") {
-			var vidio = new Vidio(url);
-			return vidio.popOut();
-		} else if (this.getService() == "youtu.be") {
-			var youtube = new Youtube(url);
-			return youtube.popOut();
-		} else {
-			return this.message;
-		}
-	};
-
 }
 
 function Youtubecom(url) {
@@ -106,7 +98,7 @@ function Vimeo(url) {
 		var regExp = /https:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/;
 		var match = this.url.match(regExp);
 		return match[2];
-	}
+	};
 
 	this.popOut = function() {
 		return 'https://player.vimeo.com/video/'+ this.getVideoID() + '?autoplay=1';
@@ -124,5 +116,42 @@ function Vidio(url) {
 
 	this.popOut = function() {
 		return 'https://www.vidio.com/embed/'+ this.getVideoID();
+	};
+}
+
+function Gfycat(url) {
+	this.url = url;
+	
+	this.getVideoID = function() {
+		var regExp = /[^/]+$/;
+		var match = this.url.match(regExp);
+		return match[0];
+	};
+	
+	this.popOut = function() {
+		return "https://gfycat.com/ifr/"+ this.getVideoID();
+	};
+}
+
+
+function Dailymotion(url) {
+	this.url = url;
+	
+	this.getVideoID = function() {
+		var regExp = /[^/]+$/;
+		var match = this.url.match(regExp);
+		return match[0];
+	};
+	
+	this.popOut = function() {
+		return "https://www.dailymotion.com/embed/video/"+ this.getVideoID() + "?autoPlay=1";
+	};
+}
+
+function Metacafe(url) {
+	this.url = url;
+	
+	this.popOut = function() {
+		return url.replace("watch", "embed");
 	};
 }
