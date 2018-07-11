@@ -48,6 +48,9 @@ function Video(url) {
 		} else if (url.toLowerCase().indexOf("metacafe.com") > 0) {
 			var metacafe = new Metacafe(url);
 			return metacafe.popOut();
+		} else if (url.toLowerCase().indexOf("twitch.tv") > 0) {
+			var twitch = new Twitch(url);
+			return twitch.popOut();
 		} else {
 			return "unknown";
 		}
@@ -153,5 +156,19 @@ function Metacafe(url) {
 	
 	this.popOut = function() {
 		return url.replace("watch", "embed");
+	};
+}
+
+function Twitch(url) {
+	this.url = url;
+	
+	this.getVideoID = function() {
+		var regExp = /[^/]+$/;
+		var match = this.url.match(regExp);
+		return match[0];
+	};
+	
+	this.popOut = function() {
+		return "https://player.twitch.tv/?channel="+ this.getVideoID();
 	};
 }
