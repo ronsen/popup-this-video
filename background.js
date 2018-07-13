@@ -51,6 +51,9 @@ function Video(url) {
 		} else if (url.toLowerCase().indexOf("twitch.tv") > 0) {
 			var twitch = new Twitch(url);
 			return twitch.popOut();
+		} else if (url.toLowerCase().indexOf("facebook.com") > 0) {
+			var facebook = new Facebook(url);
+			return facebook.popOut();
 		} else {
 			return "unknown";
 		}
@@ -171,4 +174,12 @@ function Twitch(url) {
 	this.popOut = function() {
 		return "https://player.twitch.tv/?channel="+ this.getVideoID();
 	};
+}
+
+function Facebook(url) {
+	this.url = url;
+	
+	this.popOut = function() {
+		return "https://www.facebook.com/plugins/video.php?href=" + encodeURI(this.url) + "&autoplay=true";
+	}
 }
