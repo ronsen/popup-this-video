@@ -121,7 +121,10 @@ function Vidio(url) {
 	}
 
 	this.popOut = function() {
-		return 'https://www.vidio.com/embed/'+ this.getVideoID();
+		if (this.url.indexOf('/live/') == -1) 
+			return 'https://www.vidio.com/embed/'+ this.getVideoID();
+		else
+			return 'https://www.vidio.com/live/'+ this.getVideoID() +'/embed?autoplay=true'
 	};
 }
 
