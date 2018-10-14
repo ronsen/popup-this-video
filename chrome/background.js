@@ -12,15 +12,13 @@ function contextMenuAction(info) {
 	var video = new Video(url);
 	var popupUrl = video.getPopOutURL();
 
-	if (popupUrl != 'unknown') {
-		chrome.windows.create({
-			height: 390,
-			width: 640,
-			state: "normal",
-			type: "popup",
-			url: video.getPopOutURL(),
-		});
-	}
+	chrome.windows.create({
+		height: 383,
+		width: 640,
+		state: "normal",
+		type: "popup",
+		url: video.getPopOutURL(),
+	});
 }
 
 function Video(url) {
@@ -123,9 +121,9 @@ function Vidio(url) {
 
 	this.popOut = function() {
 		if (this.url.indexOf('/live/') == -1) 
-			return 'https://www.vidio.com/embed/'+ this.getVideoID();
+			return 'https://www.vidio.com/embed/'+ this.getVideoID() +'/autoplay=true&player_only=true&live_chat=false&mute=false';
 		else
-			return 'https://www.vidio.com/live/'+ this.getVideoID() +'/embed?autoplay=true'
+			return 'https://www.vidio.com/live/'+ this.getVideoID() +'/embed?autoplay=true&player_only=true&live_chat=false&mute=false'
 	};
 }
 
