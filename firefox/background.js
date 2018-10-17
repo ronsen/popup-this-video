@@ -52,6 +52,9 @@ function Video(url) {
 		} else if (url.toLowerCase().indexOf("facebook.com") > 0) {
 			var facebook = new Facebook(url);
 			return facebook.popOut();
+		} else if (url.toLowerCase().indexOf("openload.co") > 0) {
+			var openload = new Openload(url);
+			return openload.popOut();
 		} else {
 			return url;
 		}
@@ -182,5 +185,13 @@ function Facebook(url) {
 	
 	this.popOut = function() {
 		return "https://www.facebook.com/plugins/video.php?href=" + encodeURI(this.url) + "&autoplay=true";
+	}
+}
+
+function Openload(url) {
+	this.url = url;
+
+	this.popOut = function() {
+		return this.url.replace("/f/", "/embed/");
 	}
 }

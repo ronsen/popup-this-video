@@ -185,3 +185,11 @@ function Facebook(url) {
 		return "https://www.facebook.com/plugins/video.php?href=" + encodeURI(this.url) + "&autoplay=true";
 	}
 }
+
+function Openload(url) {
+	this.url = url;
+
+	this.popOut = function() {
+		return this.url.replace("/f/", "/embed/");
+	}
+}
