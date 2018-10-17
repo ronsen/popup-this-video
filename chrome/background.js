@@ -22,39 +22,42 @@ function contextMenuAction(info) {
 }
 
 function Video(url) {
-	this.url = url;
+	this.url = url.toLowerCase();
 	this.message = 'unknown';
 	
 	this.getPopOutURL = function() {
-		if (url.toLowerCase().indexOf("youtube.com") > 0) {
+		if (this.url.indexOf("youtube.com") > 0) {
 			var youtubecom = new Youtubecom(url);
 			return youtubecom.popOut();
-		} else if (url.toLowerCase().indexOf("vimeo.com") > 0) {
+		} else if (this.url.indexOf("vimeo.com") > 0) {
 			var vimeo = new Vimeo(url);
 			return vimeo.popOut();
-		} else if (url.toLowerCase().indexOf("vidio.com") > 0) {
+		} else if (this.url.indexOf("vidio.com") > 0) {
 			var vidio = new Vidio(url);
 			return vidio.popOut();
-		} else if (url.toLowerCase().indexOf("youtu.be") > 0) {
+		} else if (this.url.indexOf("youtu.be") > 0) {
 			var youtube = new Youtube(url);
 			return youtube.popOut();
-		} else if (url.toLowerCase().indexOf("gfycat.com") > 0) {
+		} else if (this.url.indexOf("gfycat.com") > 0) {
 			var gfycat = new Gfycat(url);
 			return gfycat.popOut();
-		} else if (url.toLowerCase().indexOf("dailymotion.com") > 0) {
+		} else if (this.url.indexOf("dailymotion.com") > 0) {
 			var dailymotion = new Dailymotion(url);
 			return dailymotion.popOut();
-		} else if (url.toLowerCase().indexOf("metacafe.com") > 0) {
+		} else if (this.url.indexOf("metacafe.com") > 0) {
 			var metacafe = new Metacafe(url);
 			return metacafe.popOut();
-		} else if (url.toLowerCase().indexOf("twitch.tv") > 0) {
+		} else if (this.url.indexOf("twitch.tv") > 0) {
 			var twitch = new Twitch(url);
 			return twitch.popOut();
-		} else if (url.toLowerCase().indexOf("facebook.com") > 0) {
+		} else if (this.url.indexOf("facebook.com") > 0) {
 			var facebook = new Facebook(url);
 			return facebook.popOut();
+		} else if (this.url.indexOf("openload.co") > 0 || this.url.indexOf("oload.stream") > 0) {
+			var openload = new Openload(url);
+			return openload.popOut();
 		} else {
-			return "unknown";
+			return url;
 		}
 	};
 }
@@ -190,6 +193,10 @@ function Openload(url) {
 	this.url = url;
 
 	this.popOut = function() {
-		return this.url.replace("/f/", "/embed/");
+		if (this.url.toLowerCase().indexOf("openload.co") > 0)
+			return this.url.replace("/f/", "/embed/");
+
+		if (this.url.toLowerCase().indexOf("oload.stream") > 0)
+			return this.url.replace("/oload.stream/f/", "/openload.co/embed/");
 	}
 }
