@@ -12,18 +12,19 @@ function contextMenuAction(info) {
 	var video = new Video(url);
 	var popupUrl = video.getPopOutURL();
 
-	chrome.windows.create({
-		height: 383,
-		width: 640,
-		state: "normal",
-		type: "popup",
-		url: video.getPopOutURL(),
-	});
+	if (null != popupUrl) {
+		chrome.windows.create({
+			height: 383,
+			width: 640,
+			state: "normal",
+			type: "popup",
+			url: video.getPopOutURL(),
+		});
+	}
 }
 
 function Video(url) {
 	this.url = url.toLowerCase();
-	this.message = 'unknown';
 	
 	this.getPopOutURL = function() {
 		if (this.url.indexOf("youtube.com") > 0) {
@@ -185,7 +186,10 @@ function Facebook(url) {
 	this.url = url;
 	
 	this.popOut = function() {
-		return "https://www.facebook.com/plugins/video.php?href=" + encodeURI(this.url) + "&autoplay=true";
+		if (this.url.toLowerCase().indexOf("/videos/") > 0)
+			return "https://www.facebook.com/plugins/video.php?href=" + encodeURI(this.url) + "&autoplay=true";
+		else
+			return null;
 	}
 }
 
