@@ -124,7 +124,7 @@ function Vidio(url) {
 
 	this.popOut = function() {
 		if (this.url.indexOf('/live/') == -1) 
-			return 'https://www.vidio.com/embed/'+ this.getVideoID() +'/autoplay=true&player_only=true&live_chat=false&mute=false';
+			return 'https://www.vidio.com/embed/'+ this.getVideoID() +'?autoplay=true&player_only=true&live_chat=false&mute=false';
 		else
 			return 'https://www.vidio.com/live/'+ this.getVideoID() +'/embed?autoplay=true&player_only=true&live_chat=false&mute=false'
 	};
