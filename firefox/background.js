@@ -1,5 +1,5 @@
 browser.contextMenus.create({
-	id: "yvp",
+	id: "ptv",
 	title: "Popup This Video",
 	contexts: ["link"]
 });
@@ -13,8 +13,8 @@ function contextMenuAction(info) {
 
 	if (null != popupUrl) {
 		chrome.windows.create({
-			height: 383,
-			width: 640,
+			height: 370,
+			width: 600,
 			state: "normal",
 			type: "popup",
 			url: video.getPopOutURL(),
