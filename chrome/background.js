@@ -5,22 +5,34 @@ chrome.contextMenus.create({
 });
 
 chrome.contextMenus.onClicked.addListener(contextMenuAction);
+chrome.browserAction.onClicked.addListener(openAction);
 
-function contextMenuAction(info) {
-	console.log(info);
-	const url = info.linkUrl;
+function popupThis(url) {
 	var video = new Video(url);
 	var popupUrl = video.getPopOutURL();
 
 	if (null != popupUrl) {
 		chrome.windows.create({
-			height: 370,
+			height: 369,
 			width: 600,
 			state: "normal",
 			type: "popup",
 			url: video.getPopOutURL(),
 		});
 	}
+}
+
+function contextMenuAction(info) {
+	const url = info.linkUrl;
+	popupThis(url);
+}
+
+function openAction() {
+	var activeTab = browser.tabs.query({active: true, currentWindow: true});
+	activeTab.then((tabs) => {
+		var url = tabs[0].url;
+		popupThis(url);
+	});
 }
 
 function Video(url) {
