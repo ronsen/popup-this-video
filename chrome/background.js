@@ -69,6 +69,9 @@ function Video(url) {
 		} else if (this.url.indexOf("openload.co") > 0 || this.url.indexOf("oload.stream") > 0) {
 			var openload = new Openload(url);
 			return openload.popOut();
+		} else if (this.url.indexOf("d.tube") > 0) {
+			var dtube = new Dtube(url);
+			return dtube.popOut();
 		} else {
 			return url;
 		}
@@ -214,5 +217,22 @@ function Openload(url) {
 
 		if (this.url.toLowerCase().indexOf("oload.stream") > 0)
 			return this.url.replace("/oload.stream/f/", "/openload.co/embed/");
+	}
+}
+
+function Dtube(url) {
+	this.url = url;
+
+	this.getVideoID = function() {
+		var fragments = url.split('/');
+		if (fragments.length == 6)
+			return fragments[4]+"/"+ fragments[5];
+		if (fragments.length == 7)
+			return fragments[5]+"/"+ fragments[6];
+		return null;
+	};
+
+	this.popOut = function() {
+		return this.getVideoID() != null ? "https://emb.d.tube/#!/"+ this.getVideoID() : null;
 	}
 }
