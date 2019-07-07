@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Popup This Video",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "Popup any video from the right click menu",
 	"permissions": ["contextMenus", "tabs"],
 	"background": {

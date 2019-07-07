@@ -40,38 +40,41 @@ function Video(url) {
 	
 	this.getPopOutURL = function() {
 		if (this.url.indexOf("youtube.com") > 0) {
-			var youtubecom = new Youtubecom(url);
-			return youtubecom.popOut();
+			var v = new Youtubecom(url);
+			return v.popOut();
 		} else if (this.url.indexOf("vimeo.com") > 0) {
-			var vimeo = new Vimeo(url);
-			return vimeo.popOut();
+			var v = new Vimeo(url);
+			return v.popOut();
 		} else if (this.url.indexOf("vidio.com") > 0) {
-			var vidio = new Vidio(url);
-			return vidio.popOut();
+			var v = new Vidio(url);
+			return v.popOut();
 		} else if (this.url.indexOf("youtu.be") > 0) {
-			var youtube = new Youtube(url);
-			return youtube.popOut();
+			var v = new Youtube(url);
+			return v.popOut();
 		} else if (this.url.indexOf("gfycat.com") > 0) {
-			var gfycat = new Gfycat(url);
-			return gfycat.popOut();
+			var v = new Gfycat(url);
+			return v.popOut();
 		} else if (this.url.indexOf("dailymotion.com") > 0) {
-			var dailymotion = new Dailymotion(url);
-			return dailymotion.popOut();
+			var v = new Dailymotion(url);
+			return v.popOut();
 		} else if (this.url.indexOf("metacafe.com") > 0) {
-			var metacafe = new Metacafe(url);
-			return metacafe.popOut();
+			var v = new Metacafe(url);
+			return v.popOut();
 		} else if (this.url.indexOf("twitch.tv") > 0) {
-			var twitch = new Twitch(url);
-			return twitch.popOut();
+			var v = new Twitch(url);
+			return v.popOut();
 		} else if (this.url.indexOf("facebook.com") > 0) {
-			var facebook = new Facebook(url);
-			return facebook.popOut();
+			var v = new Facebook(url);
+			return v.popOut();
 		} else if (this.url.indexOf("openload.co") > 0 || this.url.indexOf("oload.stream") > 0) {
-			var openload = new Openload(url);
-			return openload.popOut();
+			var v = new Openload(url);
+			return v.popOut();
 		} else if (this.url.indexOf("d.tube") > 0) {
-			var dtube = new Dtube(url);
-			return dtube.popOut();
+			var v = new Dtube(url);
+			return v.popOut();
+		} else if (this.url.indexOf("viddsee.com") > 0) {
+			var v = new Viddsee(url);
+			return v.popOut();
 		} else {
 			return url;
 		}
@@ -234,5 +237,18 @@ function Dtube(url) {
 
 	this.popOut = function() {
 		return this.getVideoID() != null ? "https://emb.d.tube/#!/"+ this.getVideoID() : null;
+	}
+}
+
+function Viddsee(url) {
+	this.url = url;
+
+	this.getVideoID = function() {
+		var fragments = url.split('/');
+		return fragments[5];
+	};
+
+	this.popOut = function() {
+		return this.getVideoID() != null ? "https://www.viddsee.com/player/"+ this.getVideoID() : null;
 	}
 }
