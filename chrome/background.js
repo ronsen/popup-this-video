@@ -75,6 +75,9 @@ function Video(url) {
 		} else if (this.url.indexOf("viddsee.com") > 0) {
 			var v = new Viddsee(url);
 			return v.popOut();
+		} else if (this.url.indexOf("uptostream.com") > 0) {
+			var v = new Uptostream(url);
+			return v.popOut();
 		} else {
 			return url;
 		}
@@ -250,5 +253,18 @@ function Viddsee(url) {
 
 	this.popOut = function() {
 		return this.getVideoID() != null ? "https://www.viddsee.com/player/"+ this.getVideoID() : null;
+	}
+}
+
+function Uptostream(url) {
+	this.url = url;
+
+	this.getVideoID = function() {
+		var fragments = url.split('/');
+		return fragments[3];
+	};
+
+	this.popOut = function() {
+		return this.getVideoID() != null ? "https://uptostream.com/iframe/"+ this.getVideoID() : null;
 	}
 }
