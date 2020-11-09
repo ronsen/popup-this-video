@@ -199,7 +199,7 @@ function Twitch(url) {
 	};
 	
 	this.popOut = function() {
-		return "https://player.twitch.tv/?channel="+ this.getVideoID();
+		return "https://player.twitch.tv/?channel="+ this.getVideoID() + "&parent=twitch.tv";
 	};
 }
 
