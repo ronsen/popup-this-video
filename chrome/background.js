@@ -78,6 +78,15 @@ function Video(url) {
 		} else if (this.url.indexOf("uptostream.com") > 0) {
 			var v = new Uptostream(url);
 			return v.popOut();
+		} else if (this.url.indexOf("bitchute.com") > 0) {
+			var v = new BitChute(url);
+			return v.popOut();
+		} else if (this.url.indexOf("archive.org") > 0) {
+			var v = new Archive(url);
+			return v.popOut();
+		} else if (this.url.indexOf("liveleak.com") > 0) {
+			var v = new LiveLeak(url);
+			return v.popOut();
 		} else {
 			return url;
 		}
@@ -266,5 +275,55 @@ function Uptostream(url) {
 
 	this.popOut = function() {
 		return this.getVideoID() != null ? "https://uptostream.com/iframe/"+ this.getVideoID() : null;
+	}
+}
+
+function BitChute(url) {
+	this.url = url;
+
+	this.getVideoID = function() {
+		var fragments = url.split('/');
+		return fragments[4];
+	}
+
+	this.popOut = function() {
+		return this.getVideoID() != null ? "https://www.bitchute.com/embed/"+ this.getVideoID() : null;
+	}
+}
+
+function Archive(url) {
+	this.url = url;
+
+	this.getVideoID = function() {
+		var fragments = url.split('/');
+		console.log(fragments[4]);
+		return fragments[4];
+	}
+
+	this.popOut = function() {
+		return this.getVideoID() != null ? "https://archive.org/embed/"+ this.getVideoID() : null;
+	}	
+}
+
+function LiveLeak(url) {
+	this.url = url;
+
+	this.getURLParams = function() {
+		var vars = [], hash;
+	    var hashes = this.url.slice(this.url.indexOf('?') + 1).split('&');
+	    for(var i = 0; i < hashes.length; i++) {
+	        hash = hashes[i].split('=');
+	        vars.push(hash[0]);
+	        vars[hash[0]] = hash[1];
+	    }
+	    return vars;
+	};
+
+	this.getVideoID = function() {
+		return this.getURLParams()["t"];
+	};
+
+	this.popOut = function() {
+		return this.getVideoID() != null ? "https://www.liveleak.com/e/"+ this.getVideoID() : null;
 	}
 }
