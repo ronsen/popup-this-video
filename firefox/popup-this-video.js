@@ -1,15 +1,15 @@
-chrome.contextMenus.create({
+browser.contextMenus.create({
 	id: "ptv",
 	title: "Popup This Video",
 	contexts: ["link"]
 });
 
-chrome.contextMenus.onClicked.addListener(contextMenuAction);
-chrome.browserAction.onClicked.addListener(openAction);
+browser.contextMenus.onClicked.addListener(contextMenuAction);
+browser.browserAction.onClicked.addListener(openAction);
 
 function popupThis(url) {
-	var video = new Video(url);
-	var popupUrl = video.getPopOutURL();
+	let video = new Video(url);
+	let popupUrl = video.getPopOutURL();
 
 	if (null != popupUrl) {
 		chrome.windows.create({
@@ -28,9 +28,9 @@ function contextMenuAction(info) {
 }
 
 function openAction() {
-	var activeTab = browser.tabs.query({active: true, currentWindow: true});
+	let activeTab = browser.tabs.query({active: true, currentWindow: true});
 	activeTab.then((tabs) => {
-		var url = tabs[0].url;
+		let url = tabs[0].url;
 		popupThis(url);
 	});
 }
@@ -40,52 +40,49 @@ function Video(url) {
 	
 	this.getPopOutURL = function() {
 		if (this.url.indexOf("youtube.com") > 0) {
-			var v = new Youtubecom(url);
+			let v = new Youtubecom(url);
 			return v.popOut();
 		} else if (this.url.indexOf("vimeo.com") > 0) {
-			var v = new Vimeo(url);
+			let v = new Vimeo(url);
 			return v.popOut();
 		} else if (this.url.indexOf("vidio.com") > 0) {
-			var v = new Vidio(url);
+			let v = new Vidio(url);
 			return v.popOut();
 		} else if (this.url.indexOf("youtu.be") > 0) {
-			var v = new Youtube(url);
+			let v = new Youtube(url);
 			return v.popOut();
 		} else if (this.url.indexOf("gfycat.com") > 0) {
-			var v = new Gfycat(url);
+			let v = new Gfycat(url);
 			return v.popOut();
 		} else if (this.url.indexOf("dailymotion.com") > 0) {
-			var v = new Dailymotion(url);
+			let v = new Dailymotion(url);
 			return v.popOut();
 		} else if (this.url.indexOf("metacafe.com") > 0) {
-			var v = new Metacafe(url);
+			let v = new Metacafe(url);
 			return v.popOut();
 		} else if (this.url.indexOf("twitch.tv") > 0) {
-			var v = new Twitch(url);
+			let v = new Twitch(url);
 			return v.popOut();
 		} else if (this.url.indexOf("facebook.com") > 0) {
-			var v = new Facebook(url);
-			return v.popOut();
-		} else if (this.url.indexOf("openload.co") > 0 || this.url.indexOf("oload.stream") > 0) {
-			var v = new Openload(url);
+			let v = new Facebook(url);
 			return v.popOut();
 		} else if (this.url.indexOf("d.tube") > 0) {
-			var v = new Dtube(url);
+			let v = new Dtube(url);
 			return v.popOut();
 		} else if (this.url.indexOf("viddsee.com") > 0) {
-			var v = new Viddsee(url);
-			return v.popOut();
-		} else if (this.url.indexOf("uptostream.com") > 0) {
-			var v = new Uptostream(url);
+			let v = new Viddsee(url);
 			return v.popOut();
 		} else if (this.url.indexOf("bitchute.com") > 0) {
-			var v = new BitChute(url);
+			let v = new BitChute(url);
 			return v.popOut();
 		} else if (this.url.indexOf("archive.org") > 0) {
-			var v = new Archive(url);
+			let v = new Archive(url);
 			return v.popOut();
 		} else if (this.url.indexOf("liveleak.com") > 0) {
-			var v = new LiveLeak(url);
+			let v = new LiveLeak(url);
+			return v.popOut();
+		} else if (this.url.indexOf("nimo.tv") > 0) {
+			let v = new NimoTv(url);
 			return v.popOut();
 		} else {
 			return url;
@@ -97,9 +94,9 @@ function Youtubecom(url) {
 	this.url = url;
 
 	this.getURLParams = function() {
-		var vars = [], hash;
-	    var hashes = this.url.slice(this.url.indexOf('?') + 1).split('&');
-	    for(var i = 0; i < hashes.length; i++) {
+		let vars = [], hash;
+	    let hashes = this.url.slice(this.url.indexOf('?') + 1).split('&');
+	    for(let i = 0; i < hashes.length; i++) {
 	        hash = hashes[i].split('=');
 	        vars.push(hash[0]);
 	        vars[hash[0]] = hash[1];
@@ -112,7 +109,11 @@ function Youtubecom(url) {
 	};
 
 	this.popOut = function() {
-		return 'https://www.youtube.com/embed/'+ this.getVideoID() + '?autoplay=1';
+		let id = this.getVideoID();
+		if (id == undefined) {
+			return 'https://www.youtube.com/';
+		}
+		return 'https://www.youtube.com/embed/'+ id + '?autoplay=1';
 	};
 }
 
@@ -120,13 +121,17 @@ function Youtube(url) {
 	this.url = url;
 
 	this.getVideoID = function() {
-		var regExp = /[^/]+$/;
-		var match = this.url.match(regExp);
+		let regExp = /[^/]+$/;
+		let match = this.url.match(regExp);
 		return match[0];
 	};
 
 	this.popOut = function() {
-		return 'https://www.youtube.com/embed/'+ this.getVideoID() + '?autoplay=1';
+		let id = this.getVideoID();
+		if (id == undefined) {
+			return 'https://www.youtube.com/';
+		}
+		return 'https://www.youtube.com/embed/'+ id + '?autoplay=1';
 	};
 }
 
@@ -134,13 +139,17 @@ function Vimeo(url) {
 	this.url = url;
 
 	this.getVideoID = function() {
-		var regExp = /https:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/;
-		var match = this.url.match(regExp);
+		let regExp = /https:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/;
+		let match = this.url.match(regExp);
 		return match[2];
 	};
 
 	this.popOut = function() {
-		return 'https://player.vimeo.com/video/'+ this.getVideoID() + '?autoplay=1';
+		let id = this.getVideoID();
+		if (id == undefined) {
+			return 'https://vimeo.com/';
+		}
+		return 'https://player.vimeo.com/video/'+ id + '?autoplay=1';
 	};
 }
 
@@ -148,8 +157,8 @@ function Vidio(url) {
 	this.url = url;
 
 	this.getVideoID = function() {
-		var regExp = /[^/]+$/;
-		var match = this.url.match(regExp);
+		let regExp = /[^/]+$/;
+		let match = this.url.match(regExp);
 		return match[0];
 	}
 
@@ -165,8 +174,8 @@ function Gfycat(url) {
 	this.url = url;
 	
 	this.getVideoID = function() {
-		var regExp = /[^/]+$/;
-		var match = this.url.match(regExp);
+		let regExp = /[^/]+$/;
+		let match = this.url.match(regExp);
 		return match[0];
 	};
 	
@@ -180,8 +189,8 @@ function Dailymotion(url) {
 	this.url = url;
 	
 	this.getVideoID = function() {
-		var regExp = /[^/]+$/;
-		var match = this.url.match(regExp);
+		let regExp = /[^/]+$/;
+		let match = this.url.match(regExp);
 		return match[0];
 	};
 	
@@ -202,13 +211,17 @@ function Twitch(url) {
 	this.url = url;
 	
 	this.getVideoID = function() {
-		var regExp = /[^/]+$/;
-		var match = this.url.match(regExp);
+		let regExp = /[^/]+$/;
+		let match = this.url.match(regExp);
 		return match[0];
 	};
 	
 	this.popOut = function() {
-		return "https://player.twitch.tv/?channel="+ this.getVideoID() + "&parent=twitch.tv";
+		let id = this.getVideoID();
+		if (id == undefined) {
+			return "https://www.twitch.tv";
+		}
+		return "https://player.twitch.tv/?channel="+ id;
 	};
 }
 
@@ -217,21 +230,9 @@ function Facebook(url) {
 	
 	this.popOut = function() {
 		if (this.url.toLowerCase().indexOf("/videos/") > 0)
-			return "https://www.facebook.com/plugins/video.php?href=" + encodeURI(this.url) + "&autoplay=true";
+			return "https://www.facebook.com/plugins/video.php?href="+ encodeURI(this.url) +"&autoplay=true";
 		else
 			return null;
-	}
-}
-
-function Openload(url) {
-	this.url = url;
-
-	this.popOut = function() {
-		if (this.url.toLowerCase().indexOf("openload.co") > 0)
-			return this.url.replace("/f/", "/embed/");
-
-		if (this.url.toLowerCase().indexOf("oload.stream") > 0)
-			return this.url.replace("/oload.stream/f/", "/openload.co/embed/");
 	}
 }
 
@@ -239,7 +240,7 @@ function Dtube(url) {
 	this.url = url;
 
 	this.getVideoID = function() {
-		var fragments = url.split('/');
+		let fragments = url.split('/');
 		if (fragments.length == 6)
 			return fragments[4]+"/"+ fragments[5];
 		if (fragments.length == 7)
@@ -256,7 +257,7 @@ function Viddsee(url) {
 	this.url = url;
 
 	this.getVideoID = function() {
-		var fragments = url.split('/');
+		let fragments = url.split('/');
 		return fragments[5];
 	};
 
@@ -265,24 +266,11 @@ function Viddsee(url) {
 	}
 }
 
-function Uptostream(url) {
-	this.url = url;
-
-	this.getVideoID = function() {
-		var fragments = url.split('/');
-		return fragments[3];
-	};
-
-	this.popOut = function() {
-		return this.getVideoID() != null ? "https://uptostream.com/iframe/"+ this.getVideoID() : null;
-	}
-}
-
 function BitChute(url) {
 	this.url = url;
 
 	this.getVideoID = function() {
-		var fragments = url.split('/');
+		let fragments = url.split('/');
 		return fragments[4];
 	}
 
@@ -295,7 +283,7 @@ function Archive(url) {
 	this.url = url;
 
 	this.getVideoID = function() {
-		var fragments = url.split('/');
+		let fragments = url.split('/');
 		console.log(fragments[4]);
 		return fragments[4];
 	}
@@ -309,14 +297,14 @@ function LiveLeak(url) {
 	this.url = url;
 
 	this.getURLParams = function() {
-		var vars = [], hash;
-	    var hashes = this.url.slice(this.url.indexOf('?') + 1).split('&');
-	    for(var i = 0; i < hashes.length; i++) {
+		let lets = [], hash;
+	    let hashes = this.url.slice(this.url.indexOf('?') + 1).split('&');
+	    for(let i = 0; i < hashes.length; i++) {
 	        hash = hashes[i].split('=');
-	        vars.push(hash[0]);
-	        vars[hash[0]] = hash[1];
+	        lets.push(hash[0]);
+	        lets[hash[0]] = hash[1];
 	    }
-	    return vars;
+	    return lets;
 	};
 
 	this.getVideoID = function() {
@@ -326,4 +314,12 @@ function LiveLeak(url) {
 	this.popOut = function() {
 		return this.getVideoID() != null ? "https://www.liveleak.com/e/"+ this.getVideoID() : null;
 	}
+}
+
+function NimoTv(url) {
+	this.url = url;
+	
+	this.popOut = function() {
+		return url.replace("live", "embed");
+	};
 }
