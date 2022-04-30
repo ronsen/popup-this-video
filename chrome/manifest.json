@@ -1,9 +1,12 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "Popup This Video",
-	"version": "1.1.7",
+	"version": "1.1.8",
 	"description": "Popup any video from the right click menu",
 	"permissions": ["contextMenus", "tabs"],
+	"host_permissions": [
+		"*://*/*"
+	  ],
 	"background": {
 		"scripts": ["popup-this-video.js"],
 		"persistent": false

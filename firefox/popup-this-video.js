@@ -58,9 +58,6 @@ class Video {
 			} else if (this.url.indexOf("dailymotion.com") > 0) {
 				let v = new Dailymotion(url);
 				return v.popOut();
-			} else if (this.url.indexOf("metacafe.com") > 0) {
-				let v = new Metacafe(url);
-				return v.popOut();
 			} else if (this.url.indexOf("twitch.tv") > 0) {
 				let v = new Twitch(url);
 				return v.popOut();
@@ -165,11 +162,11 @@ class Vidio {
 		};
 
 		this.popOut = function () {
-			if (this.url.indexOf('/live/') == -1)
+			if (this.url.indexOf('/watch/') > 0) {
 				return 'https://www.vidio.com/embed/' + this.getVideoID() + '?autoplay=true&player_only=true&live_chat=false&mute=false';
-
-			else
-				return 'https://www.vidio.com/live/' + this.getVideoID() + '/embed?autoplay=true&player_only=true&live_chat=false&mute=false';
+			} else {
+				return this.url;
+			}
 		};
 	}
 }
@@ -181,38 +178,26 @@ class Gfycat {
 		this.getVideoID = function () {
 			let regExp = /[^/]+$/;
 			let match = this.url.match(regExp);
-			return match[0];
+			return match == null ? null : match[0];
 		};
 
 		this.popOut = function () {
-			return "https://gfycat.com/ifr/" + this.getVideoID();
+			let id =  this.getVideoID();
+			return id == null ? this.url : "https://gfycat.com/ifr/" + this.getVideoID();
 		};
 	}
 }
-
 
 class Dailymotion {
 	constructor(url) {
 		this.url = url;
 
-		this.getVideoID = function () {
-			let regExp = /[^/]+$/;
-			let match = this.url.match(regExp);
-			return match[0];
-		};
-
 		this.popOut = function () {
-			return "https://www.dailymotion.com/embed/video/" + this.getVideoID() + "?autoPlay=1";
-		};
-	}
-}
-
-class Metacafe {
-	constructor(url) {
-		this.url = url;
-
-		this.popOut = function () {
-			return url.replace("watch", "embed");
+			if (this.url.indexOf('/video/') > 0) {
+				return this.url.replace('live', 'embed');
+			} else{
+				return this.url;
+			}
 		};
 	}
 }
@@ -283,7 +268,7 @@ class Dtube {
 		};
 
 		this.popOut = function () {
-			return this.getVideoID() != null ? "https://emb.d.tube/#!/" + this.getVideoID() : null;
+			return this.getVideoID() != null ? "https://emb.d.tube/#!/" + this.getVideoID() : this.url;
 		};
 	}
 }
@@ -298,7 +283,7 @@ class Viddsee {
 		};
 
 		this.popOut = function () {
-			return this.getVideoID() != null ? "https://www.viddsee.com/player/" + this.getVideoID() : null;
+			return this.getVideoID() != null ? "https://www.viddsee.com/player/" + this.getVideoID() : this.url;
 		};
 	}
 }
@@ -313,7 +298,7 @@ class BitChute {
 		};
 
 		this.popOut = function () {
-			return this.getVideoID() != null ? "https://www.bitchute.com/embed/" + this.getVideoID() : null;
+			return this.getVideoID() != null ? "https://www.bitchute.com/embed/" + this.getVideoID() : this.url;
 		};
 	}
 }
@@ -324,12 +309,11 @@ class Archive {
 
 		this.getVideoID = function () {
 			let fragments = url.split('/');
-			console.log(fragments[4]);
 			return fragments[4];
 		};
 
 		this.popOut = function () {
-			return this.getVideoID() != null ? "https://archive.org/embed/" + this.getVideoID() : null;
+			return this.getVideoID() != null ? "https://archive.org/embed/" + this.getVideoID() : this.url;
 		};
 	}
 }
@@ -339,7 +323,11 @@ class NimoTv {
 		this.url = url;
 
 		this.popOut = function () {
-			return url.replace("live", "embed");
+			if (this.url.indexOf('/live/') > 0) {
+				return this.url.replace('live', 'embed');
+			} else{
+				return this.url;
+			}
 		};
 	}
 }
