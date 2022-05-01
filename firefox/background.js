@@ -9,7 +9,6 @@ browser.browserAction.onClicked.addListener(openAction);
 
 function popupThis(url) {
 	let video = new Video(url);
-	let popupUrl = video.getPopOutURL();
 
 	if (null != popupUrl) {
 		chrome.windows.create({
