@@ -1,17 +1,13 @@
 {
-	"manifest_version": 3,
 	"name": "Popup This Video",
-	"version": "1.1.8",
+	"version": "2.0.0",
+	"manifest_version": 3,
 	"description": "Popup any video from the right click menu",
 	"permissions": ["contextMenus", "tabs"],
-	"host_permissions": [
-		"*://*/*"
-	  ],
 	"background": {
-		"scripts": ["popup-this-video.js"],
-		"persistent": false
+		"service_worker": "background.js"
 	},
-	"browser_action": {
+	"action": {
 		"default_icon": {
 			"16": "icons/icon-16x16.png",
 			"32": "icons/icon-32x32.png"
