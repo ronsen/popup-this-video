@@ -13,8 +13,9 @@ class YouTube {
                 newUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
             } else {
                 const params = new URLSearchParams(this.url.search);
-                if (params.get('v')) {
-                    newUrl = `https://www.youtube.com/embed/${params.get('v')}?autoplay=1`;
+                const videoId = params.get('v');
+                if (videoId.length > 0) {
+                    newUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
                 }
             }
         }
