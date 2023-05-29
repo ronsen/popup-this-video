@@ -41,8 +41,6 @@ function popupThis(url) {
 		popupUrl = new Twitch(url).getPopupUrl();
 	}
 
-	console.log(popupUrl);
-	
 	chrome.windows.create({
 		height: 369,
 		width: 600,
