@@ -42,11 +42,11 @@ function popupThis(url) {
 	}
 
 	if (url.href.indexOf("dailymotion.com") > 0) {
-		popupUrl = new Twitch(url).getPopupUrl();
+		popupUrl = new Dailymotion(url).getPopupUrl();
 	}
 
     if (url.href.indexOf("viddsee.com") > 0) {
-		popupUrl = new Twitch(url).getPopupUrl();
+		popupUrl = new Viddsee(url).getPopupUrl();
 	}
 
 	chrome.windows.create({
