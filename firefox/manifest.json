@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Popup This Video",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "Popup any video from the right click menu",
 	"permissions": ["contextMenus", "tabs"],
 	"background": {
@@ -9,7 +9,8 @@
 			"background.js",
 			"youtube.js",
 			"vimeo.js",
-			"twitch.js"
+			"twitch.js",
+			"dailymotion.js"
 		]
 	},
 	"browser_action": {

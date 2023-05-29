@@ -47,9 +47,9 @@ class YouTube {
 
         if (this.url.href.indexOf("youtube.com") > 0) {
             if (this.url.href.indexOf("/shorts/") > 0) {
-                const path = this.url.pathname.substring(this.url.pathname.lastIndexOf('/')+ 1,
+                const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/')+ 1,
                     url.pathname.length);
-                newUrl = `https://www.youtube.com/embed/${path}?autoplay=1`;
+                newUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
             } else {
                 const params = new URLSearchParams(this.url.search);
                 if (params.get('v')) {
@@ -59,26 +59,8 @@ class YouTube {
         }
 
         if (this.url.href.indexOf("youtu.be") > 0) {
-            const path = this.url.pathname.substring(1, this.url.pathname.length);
-            newUrl = `https://www.youtube.com/embed/${path}?autoplay=1`;
-        }
-
-        return newUrl;
-    }
-}
-
-class Vimeo {
-    constructor(url) {
-        this.url = url;
-    }
-
-    getPopupUrl() {
-        let newUrl = this.url.href;
-
-        const path = this.url.pathname.substring(1, this.url.pathname.length);
-
-        if (path.length > 0) {
-            newUrl = `https://player.vimeo.com/video/${path}?autoplay=1`;
+            const videoId = this.url.pathname.substring(1, this.url.pathname.length);
+            newUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
         }
 
         return newUrl;
@@ -93,17 +75,35 @@ class Twitch {
     getPopupUrl() {
         let newUrl = this.url.href;
 
-        const path = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
+        const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
             this.url.pathname.length);
 
         if (this.url.href.indexOf("/videos/") > 0) {
-            newUrl = `https://player.twitch.tv/?video=${path}&parent=twitch.tv`;
+            newUrl = `https://player.twitch.tv/?video=${videoId}&parent=twitch.tv`;
         } else if (this.url.href.indexOf("/clip/") > 0) {
-            newUrl = `https://clips.twitch.tv/embed?clip=${path}&parent=twitch.tv" `;
+            newUrl = `https://clips.twitch.tv/embed?clip=${videoId}&parent=twitch.tv`;
         } else {
-            if (path.length > 0) {
-                newUrl = `https://player.twitch.tv/?channel=${path}&parent=twitch.tv`;
+            if (videoId.length > 0) {
+                newUrl = `https://player.twitch.tv/?channel=${videoId}&parent=twitch.tv`;
             }
+        }
+
+        return newUrl;
+    }
+}
+
+class Vimeo {
+    constructor(url) {
+        this.url = url;
+    }
+
+    getPopupUrl() {
+        let newUrl = this.url.href;
+
+        const videoId = this.url.pathname.substring(1, this.url.pathname.length);
+
+        if (videoId.length > 0) {
+            newUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1`;
         }
 
         return newUrl;

@@ -6,10 +6,10 @@ class Vimeo {
     getPopupUrl() {
         let newUrl = this.url.href;
 
-        const path = this.url.pathname.substring(1, this.url.pathname.length);
+        const videoId = this.url.pathname.substring(1, this.url.pathname.length);
 
-        if (path.length > 0) {
-            newUrl = `https://player.vimeo.com/video/${path}?autoplay=1`;
+        if (videoId.length > 0) {
+            newUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1`;
         }
 
         return newUrl;
