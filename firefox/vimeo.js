@@ -4,9 +4,13 @@ class Vimeo {
     }
 
     getPopupUrl() {
-        const url = new URL(this.url);
-        const path = url.pathname.substring(1, url.pathname.length);
-        const newUrl = `https://player.vimeo.com/video/${path}?autoplay=1`;
+        let newUrl = this.url.href;
+
+        const path = this.url.pathname.substring(1, this.url.pathname.length);
+
+        if (path.length > 0) {
+            newUrl = `https://player.vimeo.com/video/${path}?autoplay=1`;
+        }
 
         return newUrl;
     }

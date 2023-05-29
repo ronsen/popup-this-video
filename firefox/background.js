@@ -5,7 +5,7 @@ browser.contextMenus.create({
 });
 
 function contextMenuAction(info) {
-	popupThis(info.linkUrl);
+	popupThis(new URL(info.linkUrl));
 }
 
 browser.contextMenus.onClicked.addListener(contextMenuAction);
@@ -16,29 +16,29 @@ function openAction() {
 	});
 
 	activeTab.then((tabs) => {
-		let url = tabs[0].url;
-		popupThis(url);
+		popupThis(new URL(tabs[0].url));
 	});
 }
 
 browser.browserAction.onClicked.addListener(openAction);
 
 function popupThis(url) {
-	let popupUrl  = url;
+	let popupUrl  = url.href;
 
-	if (url.toLowerCase().indexOf("youtube.com") > 0) {
-		const v = new YouTube(url);
-		popupUrl = v.getPopupUrl();
+	if (url.href.indexOf("youtube.com") > 0) {
+		popupUrl = new YouTube(url).getPopupUrl();
 	}
 
-	if (url.toLowerCase().indexOf("youtu.be") > 0) {
-		const v = new YouTube(url);
-		popupUrl = v.getPopupUrl();
+	if (url.href.indexOf("youtu.be") > 0) {
+		popupUrl = new YouTube(url).getPopupUrl();
 	}
 
-	if (url.toLowerCase().indexOf("vimeo.com") > 0) {
-		const v = new Vimeo(url);
-		popupUrl = v.getPopupUrl();
+	if (url.href.indexOf("vimeo.com") > 0) {
+		popupUrl = new Vimeo(url).getPopupUrl();
+	}
+
+	if (url.href.indexOf("twitch.tv") > 0) {
+		popupUrl = new Twitch(url).getPopupUrl();
 	}
 
 	console.log(popupUrl);
