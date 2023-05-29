@@ -41,6 +41,14 @@ function popupThis(url) {
 		popupUrl = new Twitch(url).getPopupUrl();
 	}
 
+	if (url.href.indexOf("dailymotion.com") > 0) {
+		popupUrl = new Twitch(url).getPopupUrl();
+	}
+
+    if (url.href.indexOf("viddsee.com") > 0) {
+		popupUrl = new Twitch(url).getPopupUrl();
+	}
+
 	chrome.windows.create({
 		height: 369,
 		width: 600,

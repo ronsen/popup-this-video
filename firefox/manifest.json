@@ -10,7 +10,8 @@
 			"youtube.js",
 			"vimeo.js",
 			"twitch.js",
-			"dailymotion.js"
+			"dailymotion.js",
+			"viddsee.js"
 		]
 	},
 	"browser_action": {

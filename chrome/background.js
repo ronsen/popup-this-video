@@ -28,6 +28,14 @@ chrome.contextMenus.onClicked.addListener((info) => {
 		popupUrl = new Twitch(url).getPopupUrl();
 	}
 
+    if (url.href.indexOf("dailymotion.com") > 0) {
+		popupUrl = new Twitch(url).getPopupUrl();
+	}
+
+    if (url.href.indexOf("viddsee.com") > 0) {
+		popupUrl = new Twitch(url).getPopupUrl();
+	}
+
 	chrome.windows.create({
 		height: 369,
 		width: 600,
@@ -104,6 +112,46 @@ class Vimeo {
 
         if (videoId.length > 0) {
             newUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1`;
+        }
+
+        return newUrl;
+    }
+}
+
+class Dailymotion {
+    constructor(url) {
+        this.url = url;
+    }
+
+    getPopupUrl() {
+        let newUrl = this.url.href;
+
+        const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
+            this.url.pathname.length);
+
+        if (videoId.length > 0) {
+            newUrl = `https://www.dailymotion.com/embed/video/${videoId}?autoplay=1`;
+        }
+
+        return newUrl;
+    }
+}
+
+class Viddsee {
+    constructor(url) {
+        this.url = url;
+    }
+
+    getPopupUrl() {
+        let newUrl = this.url.href;
+
+        if (this.url.href.indexOf('/video/')> 0) {
+            const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
+                this.url.pathname.length);
+
+            if (videoId.length > 0) {
+                newUrl = `https://www.viddsee.com/player/${videoId}`;
+            }
         }
 
         return newUrl;
