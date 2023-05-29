@@ -5,7 +5,12 @@
 	"description": "Popup any video from the right click menu",
 	"permissions": ["contextMenus", "tabs"],
 	"background": {
-		"scripts": ["background.js"]
+		"scripts": [
+			"background.js",
+			"youtube.js",
+			"vimeo.js",
+			"twitch.js"
+		]
 	},
 	"browser_action": {
 		"default_icon": {
