@@ -14,7 +14,9 @@ class YouTube {
                 newUrl = `https://www.youtube.com/embed/${path}?autoplay=1`;
             } else {
                 const params = new URLSearchParams(url.search);
-                newUrl = `https://www.youtube.com/embed/${params.get('v')}?autoplay=1`;
+                if (params.get('v')) {
+                    newUrl = `https://www.youtube.com/embed/${params.get('v')}?autoplay=1`;
+                }
             }
         }
 
