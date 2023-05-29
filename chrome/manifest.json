@@ -5,7 +5,8 @@
 	"description": "Popup any video from the right click menu",
 	"permissions": ["contextMenus", "tabs"],
 	"background": {
-		"service_worker": "background.js"
+		"service_worker": "background.js",
+		"type": "module"
 	},
 	"action": {
 		"default_icon": {
