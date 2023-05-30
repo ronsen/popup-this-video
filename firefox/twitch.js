@@ -14,7 +14,7 @@ class Twitch {
         } else if (this.url.href.indexOf("/clip/") > 0) {
             newUrl = `https://clips.twitch.tv/embed?clip=${videoId}&parent=twitch.tv`;
         } else {
-            if (videoId.length > 0) {
+            if (videoId) {
                 newUrl = `https://player.twitch.tv/?channel=${videoId}&parent=twitch.tv`;
             }
         }

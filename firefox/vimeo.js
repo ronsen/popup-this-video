@@ -8,7 +8,7 @@ class Vimeo {
 
         const videoId = this.url.pathname.substring(1, this.url.pathname.length);
 
-        if (videoId.length > 0) {
+        if (videoId) {
             newUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1`;
         }
 

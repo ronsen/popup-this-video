@@ -57,7 +57,7 @@ class YouTube {
         if (this.url.href.indexOf("youtube.com") > 0) {
             if (this.url.href.indexOf("/shorts/") > 0) {
                 videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-                    url.pathname.length);
+                    this.url.pathname.length);
             } else {
                 const params = new URLSearchParams(this.url.search);
                 videoId = params.get('v');
@@ -68,7 +68,7 @@ class YouTube {
             videoId = this.url.pathname.substring(1, this.url.pathname.length);
         }
 
-        if (videoId.length > 0) {
+        if (videoId) {
             newUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
         }
 
@@ -92,7 +92,7 @@ class Twitch {
         } else if (this.url.href.indexOf("/clip/") > 0) {
             newUrl = `https://clips.twitch.tv/embed?clip=${videoId}&parent=twitch.tv`;
         } else {
-            if (videoId.length > 0) {
+            if (videoId) {
                 newUrl = `https://player.twitch.tv/?channel=${videoId}&parent=twitch.tv`;
             }
         }
@@ -111,7 +111,7 @@ class Vimeo {
 
         const videoId = this.url.pathname.substring(1, this.url.pathname.length);
 
-        if (videoId.length > 0) {
+        if (videoId) {
             newUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1`;
         }
 
@@ -127,11 +127,13 @@ class Dailymotion {
     getPopupUrl() {
         let newUrl = this.url.href;
 
-        const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-            this.url.pathname.length);
+        if (this.url.href.indexOf('/video/')> 0) {
+            const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
+                this.url.pathname.length);
 
-        if (videoId.length > 0) {
-            newUrl = `https://www.dailymotion.com/embed/video/${videoId}?autoplay=1`;
+            if (videoId) {
+                newUrl = `https://www.dailymotion.com/embed/video/${videoId}?autoplay=1`;
+            }
         }
 
         return newUrl;
@@ -150,7 +152,7 @@ class Viddsee {
             const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
                 this.url.pathname.length);
 
-            if (videoId.length > 0) {
+            if (videoId) {
                 newUrl = `https://www.viddsee.com/player/${videoId}`;
             }
         }

@@ -10,7 +10,7 @@ class YouTube {
         if (this.url.href.indexOf("youtube.com") > 0) {
             if (this.url.href.indexOf("/shorts/") > 0) {
                 videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-                    url.pathname.length);
+                    this.url.pathname.length);
             } else {
                 const params = new URLSearchParams(this.url.search);
                 videoId = params.get('v');
@@ -21,7 +21,7 @@ class YouTube {
             videoId = this.url.pathname.substring(1, this.url.pathname.length);
         }
 
-        if (videoId.length > 0) {
+        if (videoId) {
             newUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
         }
 

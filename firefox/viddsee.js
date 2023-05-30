@@ -10,7 +10,7 @@ class Viddsee {
             const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
                 this.url.pathname.length);
 
-            if (videoId.length > 0) {
+            if (videoId) {
                 newUrl = `https://www.viddsee.com/player/${videoId}`;
             }
         }
