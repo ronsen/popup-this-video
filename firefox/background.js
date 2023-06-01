@@ -49,6 +49,22 @@ function popupThis(url) {
 		popupUrl = new Viddsee(url).getPopupUrl();
 	}
 
+	if (url.href.indexOf("bilibili.com") > 0) {
+		popupUrl = new Bilibili(url).getPopupUrl();
+	}
+
+	if (url.href.indexOf("odysee.com") > 0) {
+		popupUrl = new Odysee(url).getPopupUrl();
+	}
+
+	if (url.href.indexOf("bitchute.com") > 0) {
+		popupUrl = new Bitchute(url).getPopupUrl();
+	}
+
+	if (url.href.indexOf("facebook.com") > 0) {
+		popupUrl = new Facebook(url).getPopupUrl();
+	}
+
 	chrome.windows.create({
 		height: 369,
 		width: 600,
