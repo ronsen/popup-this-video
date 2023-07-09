@@ -52,6 +52,10 @@ chrome.contextMenus.onClicked.addListener((info) => {
 		popupUrl = new Facebook(url).getPopupUrl();
 	}
 
+    if (url.href.indexOf("kick.com") > 0) {
+		popupUrl = new Kick(url).getPopupUrl();
+	}
+
 	chrome.windows.create({
 		height: 369,
 		width: 600,
@@ -256,6 +260,25 @@ class Odysee {
             }
         }
         
+        return newUrl;
+    }
+}
+
+class Kick {
+    constructor(url) {
+        this.url = url;
+    }
+
+    getPopupUrl() {
+        let newUrl = this.url.href;
+
+        const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
+            this.url.pathname.length);
+
+        if (videoId) {
+            newUrl = `https://player.kick.com/${videoId}`;
+        }
+
         return newUrl;
     }
 }

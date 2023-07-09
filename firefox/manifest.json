@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Popup This Video",
-	"version": "1.2.2",
+	"version": "1.2.3",
 	"description": "Popup any video from the right click menu",
 	"permissions": ["contextMenus", "tabs"],
 	"background": {
@@ -15,7 +15,8 @@
 			"bilibili.js",
 			"odysee.js",
 			"bitchute.js",
-			"facebook.js"
+			"facebook.js",
+			"kick.js"
 		]
 	},
 	"browser_action": {

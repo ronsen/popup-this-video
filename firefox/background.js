@@ -65,6 +65,10 @@ function popupThis(url) {
 		popupUrl = new Facebook(url).getPopupUrl();
 	}
 
+	if (url.href.indexOf("kick.com") > 0) {
+		popupUrl = new Kick(url).getPopupUrl();
+	}
+
 	chrome.windows.create({
 		height: 369,
 		width: 600,
