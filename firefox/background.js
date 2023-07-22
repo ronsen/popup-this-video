@@ -69,6 +69,10 @@ function popupThis(url) {
 		popupUrl = new Kick(url).getPopupUrl();
 	}
 
+	if (url.href.indexOf("vidio.com") > 0) {
+		popupUrl = new Vidio(url).getPopupUrl();
+	}
+
 	chrome.windows.create({
 		height: 369,
 		width: 600,
