@@ -8,13 +8,13 @@ function init() {
 	const height = localStorage.getItem('height');
 
 	if (!height) {
-		localStorage.setItem('height', 360);
+		localStorage.setItem('height', 300);
 	}
 
 	const width = localStorage.getItem('width');
 
 	if (!width) {
-		localStorage.setItem('width', 600);
+		localStorage.setItem('width', 500);
 	}
 }
 
