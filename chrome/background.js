@@ -43,95 +43,16 @@ chrome.contextMenus.onClicked.addListener((info) => {
 	});
 });
 
-const youtube = (url) => {
-	let videoId = '';
-
-	if (url.href.indexOf("youtube.com") > 0) {
-		if (url.href.indexOf("/shorts/") > 0) {
-			videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
-				url.pathname.length);
-		} else {
-			const params = new URLSearchParams(url.search);
-			videoId = params.get('v');
-		}
-	}
-
-	if (url.href.indexOf("youtu.be") > 0) {
-		videoId = url.pathname.substring(1, url.pathname.length);
-	}
-
-	if (videoId) {
-		return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-	}
-
-	return url.href;
-}
-
-const twitch = (url) => {
-	const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
-		url.pathname.length);
-
-	if (videoId) {
-		if (url.href.indexOf("/videos/") > 0) {
-			return `https://player.twitch.tv/?video=${videoId}&parent=twitch.tv`;
-		} else if (url.href.indexOf("/clip/") > 0) {
-			return `https://clips.twitch.tv/embed?clip=${videoId}&parent=twitch.tv`;
-		} else {
-			return `https://player.twitch.tv/?channel=${videoId}&parent=twitch.tv`;
-		}
-	}
-
-	return url.href;
-}
-
-const vimeo = (url) => {
-	const videoId = url.pathname.substring(1, url.pathname.length);
-
-	if (videoId) {
-		return `https://player.vimeo.com/video/${videoId}?autoplay=1`;
-	}
-
-	return url.href;
-}
-
-const dailymotion = (url) => {
-	if (url.href.indexOf('/video/') > 0) {
-		const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
-			url.pathname.length);
-
-		if (videoId) {
-			return `https://www.dailymotion.com/embed/video/${videoId}?autoplay=1`;
-		}
-	}
-
-	return url.href;
-}
-
-const viddsee = (url) => {
-
-	if (url.href.indexOf('/video/') > 0) {
-		const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
-			url.pathname.length);
-
-		if (videoId) {
-			return `https://www.viddsee.com/player/${videoId}`;
-		}
-	}
-
-	return url.href;
-}
-
 const bilibili = (url) => {
-
 	const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
 		url.pathname.length);
 
 	if (videoId) {
-		if (url.href.indexOf("/video/") > 0) {
+		if (url.pathname.startsWith("/video/")) {
 			return `https://player.bilibili.com/player.html?bvid=${videoId}`;
 		}
 
-		if (url.href.indexOf("/live.bilibili.com/") > 0) {
+		if (url.hostname.includes('live.bilibili.com')) {
 			return `https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=${videoId}`;
 		}
 	}
@@ -142,60 +63,120 @@ const bilibili = (url) => {
 const bitchute = (url) => {
 	const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1, url.pathname.length);
 
-	if (videoId) {
-		if (url.href.indexOf("/video/") > 0) {
-			return `https://www.bitchute.com/embed/${videoId}/`;
+	if (videoId && url.pathname.startsWith("/video/")) {
+		return `https://www.bitchute.com/embed/${videoId}/`;
+	}
+
+	return url.href;
+}
+
+const dailymotion = (url) => {
+	const path = url.pathname;
+
+	if (path.startsWith('/video/')) {
+		const videoId = path.split('/').pop();
+
+		if (videoId) {
+			return `https://www.dailymotion.com/embed/video/${videoId}?autoplay=1`;
 		}
 	}
 
 	return url.href;
-}
+};
 
-const facebook = (url) => {
-	if (url.href.indexOf("/video/") > 0 || url.href.indexOf("/watch/") > 0) {
-		return 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(url.href);
-	}
+const facebook = (url) =>
+	/\/(video|watch)\//.test(url.pathname)
+		? `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url.href)}`
+		: url.href;
 
-	return url.href;
-}
+const kick = (url) => {
+	const videoId = url.pathname.split('/').pop();
+
+	return videoId ? `https://player.kick.com/${videoId}` : url.href;
+};
 
 const odysee = (url) => {
 	const videoId = url.pathname.substring(url.pathname.indexOf('/') + 1,
 		url.pathname.length);
 
-	if (videoId) {
-		if (url.pathname.indexOf(":") > 0) {
-			return `https://odysee.com/$/embed/${videoId}?&autoplay=true`;
+	if (videoId && url.pathname.indexOf(":") > 0) {
+		return `https://odysee.com/$/embed/${videoId}?&autoplay=true`;
+	}
+
+	return url.href;
+}
+
+const twitch = (url) => {
+	const path = url.pathname;
+	const videoId = path.split('/').pop();
+
+	if (!videoId) return url.href;
+
+	if (path.startsWith('/videos/')) {
+		return `https://player.twitch.tv/?video=${videoId}&parent=twitch.tv`;
+	}
+
+	if (path.startsWith('/clip/')) {
+		return `https://clips.twitch.tv/embed?clip=${videoId}&parent=twitch.tv`;
+	}
+
+	return `https://player.twitch.tv/?channel=${videoId}&parent=twitch.tv`;
+}
+
+const viddsee = (url) => {
+	const path = url.pathname;
+
+	if (path.startsWith('/video/')) {
+		const videoId = path.split('/').pop();
+		
+		if (videoId) {
+			return `https://www.viddsee.com/player/${videoId}`;
 		}
 	}
 
 	return url.href;
-}
-
-const kick = (url) => {
-	const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
-		url.pathname.length);
-
-	if (videoId) {
-		return `https://player.kick.com/${videoId}`;
-	}
-
-	return url.href;
-}
+};
 
 const vidio = (url) => {
-	const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
-		url.pathname.length);
+	const path = url.pathname;
+	const videoId = path.split('/').pop();
 
-	if (videoId) {
-		if (url.href.indexOf("/watch/") > 0) {
-			return `https://www.vidio.com/embed/${videoId}?autoplay=true&player_only=true&mute=false`;
-		}
+	if (!videoId) return url.href;
 
-		if (url.href.indexOf("/live/") > 0) {
-			return `https://www.vidio.com/live/${videoId}/embed?autoplay=true&player_only=true&mute=false`;
-		}
+	if (path.startsWith('/watch/')) {
+		return `https://www.vidio.com/embed/${videoId}?autoplay=true&player_only=true&mute=false`;
+	}
+
+	if (path.startsWith('/live/')) {
+		return `https://www.vidio.com/live/${videoId}/embed?autoplay=true&player_only=true&mute=false`;
 	}
 
 	return url.href;
-}
+};
+
+const vimeo = (url) => {
+	const videoId = url.pathname.slice(1); // remove leading slash
+
+	return videoId
+		? `https://player.vimeo.com/video/${videoId}?autoplay=1`
+		: url.href;
+};
+
+const youtube = (url) => {
+	let videoId = '';
+
+	if (url.hostname.includes('youtube.com')) {
+		if (url.pathname.startsWith('/shorts/')) {
+			videoId = url.pathname.split('/').pop();
+		} else {
+			const params = new URLSearchParams(url.search);
+			videoId = params.get('v') || '';
+		}
+	} else if (url.hostname === 'youtu.be') {
+		videoId = url.pathname.slice(1);
+	}
+
+	return videoId
+		? `https://www.youtube.com/embed/${videoId}?autoplay=1`
+		: url.href;
+};

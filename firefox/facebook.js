@@ -1,7 +1,4 @@
-const facebook = (url) => {
-	if (url.href.indexOf("/video/") > 0 || url.href.indexOf("/watch/") > 0) {
-		return 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(url.href);
-	}
-
-	return url.href;
-}
+const facebook = (url) =>
+	/\/(video|watch)\//.test(url.pathname)
+		? `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url.href)}`
+		: url.href;

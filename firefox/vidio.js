@@ -1,16 +1,16 @@
 const vidio = (url) => {
-	const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
-		url.pathname.length);
+	const path = url.pathname;
+	const videoId = path.split('/').pop();
 
-	if (videoId) {
-		if (url.href.indexOf("/watch/") > 0) {
-			return `https://www.vidio.com/embed/${videoId}?autoplay=true&player_only=true&mute=false`;
-		}
+	if (!videoId) return url.href;
 
-		if (url.href.indexOf("/live/") > 0) {
-			return `https://www.vidio.com/live/${videoId}/embed?autoplay=true&player_only=true&mute=false`;
-		}
+	if (path.startsWith('/watch/')) {
+		return `https://www.vidio.com/embed/${videoId}?autoplay=true&player_only=true&mute=false`;
+	}
+
+	if (path.startsWith('/live/')) {
+		return `https://www.vidio.com/live/${videoId}/embed?autoplay=true&player_only=true&mute=false`;
 	}
 
 	return url.href;
-}
+};

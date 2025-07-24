@@ -3,11 +3,11 @@ const bilibili = (url) => {
 		url.pathname.length);
 
 	if (videoId) {
-		if (url.href.indexOf("/video/") > 0) {
+		if (url.pathname.startsWith("/video/")) {
 			return `https://player.bilibili.com/player.html?bvid=${videoId}`;
 		}
 
-		if (url.href.indexOf("/live.bilibili.com/") > 0) {
+		if (url.hostname.includes('live.bilibili.com')) {
 			return `https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=${videoId}`;
 		}
 	}

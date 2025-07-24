@@ -1,9 +1,7 @@
 const vimeo = (url) => {
-	const videoId = url.pathname.substring(1, url.pathname.length);
+	const videoId = url.pathname.slice(1); // remove leading slash
 
-	if (videoId) {
-		return `https://player.vimeo.com/video/${videoId}?autoplay=1`;
-	}
-
-	return url.href;
-}
+	return videoId
+		? `https://player.vimeo.com/video/${videoId}?autoplay=1`
+		: url.href;
+};
