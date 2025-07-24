@@ -4,22 +4,7 @@ browser.contextMenus.create({
 	contexts: ["link"]
 });
 
-function init() {
-	const height = localStorage.getItem('height');
-
-	if (!height) {
-		localStorage.setItem('height', 300);
-	}
-
-	const width = localStorage.getItem('width');
-
-	if (!width) {
-		localStorage.setItem('width', 500);
-	}
-}
-
 function contextMenuAction(info) {
-	init();
 	popupThis(new URL(info.linkUrl));
 }
 
@@ -31,7 +16,6 @@ function openAction() {
 	});
 
 	activeTab.then((tabs) => {
-		init();
 		popupThis(new URL(tabs[0].url));
 	});
 }
@@ -85,12 +69,9 @@ function popupThis(url) {
 		popupUrl = vidio(url);
 	}
 
-	const height = parseInt(localStorage.getItem('height'));
-	const width = parseInt(localStorage.getItem('width'));
-
 	chrome.windows.create({
-		height,
-		width,
+		height: 281,
+		width: 500,
 		state: "normal",
 		type: "popup",
 		url: popupUrl
