@@ -1,6 +1,5 @@
 const bitchute = (url) => {
-	const pathname = url.pathname.substring(0, url.pathname.length - 1);
-	const videoId = pathname.substring(pathname.lastIndexOf('/') + 1, pathname.length);
+	const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1, url.pathname.length);
 
 	if (videoId) {
 		if (url.href.indexOf("/video/") > 0) {
