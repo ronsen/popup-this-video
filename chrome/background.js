@@ -10,54 +10,50 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.contextMenus.onClicked.addListener((info) => {
 	const url = new URL(info.linkUrl);
 
-	let popupUrl  = url.href;
+	let popupUrl = url.href;
 
-	if (url.href.indexOf("youtube.com") > 0) {
-		popupUrl = new YouTube(url).getPopupUrl();
-	}
-
-	if (url.href.indexOf("youtu.be") > 0) {
-		popupUrl = new YouTube(url).getPopupUrl();
+	if (url.href.indexOf("youtube.com") > 0 || url.href.indexOf("youtu.be") > 0) {
+		popupUrl = youtube(url);
 	}
 
 	if (url.href.indexOf("vimeo.com") > 0) {
-		popupUrl = new Vimeo(url).getPopupUrl();
+		popupUrl = vimeo(url);
 	}
 
 	if (url.href.indexOf("twitch.tv") > 0) {
-		popupUrl = new Twitch(url).getPopupUrl();
+		popupUrl = twitch(url);
 	}
 
 	if (url.href.indexOf("dailymotion.com") > 0) {
-		popupUrl = new Dailymotion(url).getPopupUrl();
+		popupUrl = dailymotion(url);
 	}
 
-    if (url.href.indexOf("viddsee.com") > 0) {
-		popupUrl = new Viddsee(url).getPopupUrl();
+	if (url.href.indexOf("viddsee.com") > 0) {
+		popupUrl = viddsee(url);
 	}
 
 	if (url.href.indexOf("bilibili.com") > 0) {
-		popupUrl = new Bilibili(url).getPopupUrl();
+		popupUrl = bilibili(url);
 	}
 
 	if (url.href.indexOf("odysee.com") > 0) {
-		popupUrl = new Odysee(url).getPopupUrl();
+		popupUrl = odysee(url);
 	}
 
 	if (url.href.indexOf("bitchute.com") > 0) {
-		popupUrl = new Bitchute(url).getPopupUrl();
+		popupUrl = bitchute(url);
 	}
 
 	if (url.href.indexOf("facebook.com") > 0) {
-		popupUrl = new Facebook(url).getPopupUrl();
+		popupUrl = facebook(url);
 	}
 
-    if (url.href.indexOf("kick.com") > 0) {
-		popupUrl = new Kick(url).getPopupUrl();
+	if (url.href.indexOf("kick.com") > 0) {
+		popupUrl = kick(url);
 	}
 
-    if (url.href.indexOf("vidio.com") > 0) {
-		popupUrl = new Vidio(url).getPopupUrl();
+	if (url.href.indexOf("vidio.com") > 0) {
+		popupUrl = vidio(url);
 	}
 
 	chrome.windows.create({
@@ -69,245 +65,160 @@ chrome.contextMenus.onClicked.addListener((info) => {
 	});
 });
 
-class YouTube {
-    constructor(url) {
-        this.url = url;
-    }
+const youtube = (url) => {
+	let videoId = '';
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
-        let videoId = '';
+	if (url.href.indexOf("youtube.com") > 0) {
+		if (url.href.indexOf("/shorts/") > 0) {
+			videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
+				url.pathname.length);
+		} else {
+			const params = new URLSearchParams(url.search);
+			videoId = params.get('v');
+		}
+	}
 
-        if (this.url.href.indexOf("youtube.com") > 0) {
-            if (this.url.href.indexOf("/shorts/") > 0) {
-                videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-                    this.url.pathname.length);
-            } else {
-                const params = new URLSearchParams(this.url.search);
-                videoId = params.get('v');
-            }
-        }
+	if (url.href.indexOf("youtu.be") > 0) {
+		videoId = url.pathname.substring(1, url.pathname.length);
+	}
 
-        if (this.url.href.indexOf("youtu.be") > 0) {
-            videoId = this.url.pathname.substring(1, this.url.pathname.length);
-        }
+	if (videoId) {
+		return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+	}
 
-        if (videoId) {
-            newUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-        }
-
-        return newUrl;
-    }
+	return url.href;
 }
 
-class Twitch {
-    constructor(url) {
-        this.url = url;
-    }
+const twitch = (url) => {
+	const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
+		url.pathname.length);
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+	if (videoId) {
+		if (url.href.indexOf("/videos/") > 0) {
+			return `https://player.twitch.tv/?video=${videoId}&parent=twitch.tv`;
+		} else if (url.href.indexOf("/clip/") > 0) {
+			return `https://clips.twitch.tv/embed?clip=${videoId}&parent=twitch.tv`;
+		} else {
+			return `https://player.twitch.tv/?channel=${videoId}&parent=twitch.tv`;
+		}
+	}
 
-        const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-            this.url.pathname.length);
-
-        if (videoId) {
-            if (this.url.href.indexOf("/videos/") > 0) {
-                newUrl = `https://player.twitch.tv/?video=${videoId}&parent=twitch.tv`;
-            } else if (this.url.href.indexOf("/clip/") > 0) {
-                newUrl = `https://clips.twitch.tv/embed?clip=${videoId}&parent=twitch.tv`;
-            } else {
-                newUrl = `https://player.twitch.tv/?channel=${videoId}&parent=twitch.tv`;
-            }
-        }
-
-        return newUrl;
-    }
+	return url.href;
 }
 
-class Vimeo {
-    constructor(url) {
-        this.url = url;
-    }
+const vimeo = (url) => {
+	const videoId = url.pathname.substring(1, url.pathname.length);
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+	if (videoId) {
+		return `https://player.vimeo.com/video/${videoId}?autoplay=1`;
+	}
 
-        const videoId = this.url.pathname.substring(1, this.url.pathname.length);
-
-        if (videoId) {
-            newUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1`;
-        }
-
-        return newUrl;
-    }
+	return url.href;
 }
 
-class Dailymotion {
-    constructor(url) {
-        this.url = url;
-    }
+const dailymotion = (url) => {
+	if (url.href.indexOf('/video/') > 0) {
+		const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
+			url.pathname.length);
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+		if (videoId) {
+			return `https://www.dailymotion.com/embed/video/${videoId}?autoplay=1`;
+		}
+	}
 
-        if (this.url.href.indexOf('/video/')> 0) {
-            const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-                this.url.pathname.length);
-
-            if (videoId) {
-                newUrl = `https://www.dailymotion.com/embed/video/${videoId}?autoplay=1`;
-            }
-        }
-
-        return newUrl;
-    }
+	return url.href;
 }
 
-class Viddsee {
-    constructor(url) {
-        this.url = url;
-    }
+const viddsee = (url) => {
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+	if (url.href.indexOf('/video/') > 0) {
+		const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
+			url.pathname.length);
 
-        if (this.url.href.indexOf('/video/')> 0) {
-            const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-                this.url.pathname.length);
+		if (videoId) {
+			return `https://www.viddsee.com/player/${videoId}`;
+		}
+	}
 
-            if (videoId) {
-                newUrl = `https://www.viddsee.com/player/${videoId}`;
-            }
-        }
-
-        return newUrl;
-    }
+	return url.href;
 }
 
-class Bilibili {
-    constructor(url) {
-        this.url = url;
-    }
+const bilibili = (url) => {
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+	const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
+		url.pathname.length);
 
-        const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-            this.url.pathname.length);
+	if (videoId) {
+		if (url.href.indexOf("/video/") > 0) {
+			return `https://player.bilibili.com/player.html?bvid=${videoId}`;
+		}
 
-        if (videoId) {
-            if (this.url.href.indexOf("/video/") > 0) {
-                newUrl = `https://player.bilibili.com/player.html?bvid=${videoId}`;
-            }
+		if (url.href.indexOf("/live.bilibili.com/") > 0) {
+			return `https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=${videoId}`;
+		}
+	}
 
-            if (this.url.href.indexOf("/live.bilibili.com/") > 0) {
-                newUrl = `https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=${videoId}`;
-            }
-        }
-
-        return newUrl;
-    }
+	return url.href;
 }
 
-class Bitchute {
-    constructor(url) {
-        this.url = url;
-    }
+const bitchute = (url) => {
+	const pathname = url.pathname.substring(0, url.pathname.length - 1);
+	const videoId = pathname.substring(pathname.lastIndexOf('/') + 1, pathname.length);
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+	if (videoId) {
+		if (url.href.indexOf("/video/") > 0) {
+			return `https://www.bitchute.com/embed/${videoId}/`;
+		}
+	}
 
-        const pathname = this.url.pathname.substring(0, this.url.pathname.length - 1);
-        const videoId = pathname.substring(pathname.lastIndexOf('/') + 1, pathname.length);
-
-        if (videoId) {
-            if (this.url.href.indexOf("/video/") > 0) {
-                newUrl = `https://www.bitchute.com/embed/${videoId}/`;
-            }
-        }
-        
-        return newUrl;
-    }
+	return url.href;
 }
 
-class Facebook {
-    constructor(url) {
-        this.url = url;
-    }
+const facebook = (url) => {
+	if (url.href.indexOf("/video/") > 0 || url.href.indexOf("/watch/") > 0) {
+		return 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(newUrl);
+	}
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
-
-        if (this.url.href.indexOf("/video/") > 0 || this.url.href.indexOf("/watch/") > 0) {
-            newUrl = 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(newUrl);
-        }
-        
-        return newUrl;
-    }
+	return url.href;
 }
 
-class Odysee {
-    constructor(url) {
-        this.url = url;
-    }
+const odysee = (url) => {
+	const videoId = url.pathname.substring(url.pathname.indexOf('/') + 1,
+		url.pathname.length);
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+	if (videoId) {
+		if (url.pathname.indexOf(":") > 0) {
+			return `https://odysee.com/$/embed/${videoId}?&autoplay=true`;
+		}
+	}
 
-        const videoId = this.url.pathname.substring(this.url.pathname.indexOf('/') + 1,
-            this.url.pathname.length);
-
-        if (videoId) {
-            if (this.url.pathname.indexOf(":") > 0) {
-                newUrl = `https://odysee.com/$/embed/${videoId}?&autoplay=true`;
-            }
-        }
-        
-        return newUrl;
-    }
+	return url.href;
 }
 
-class Kick {
-    constructor(url) {
-        this.url = url;
-    }
+const kick = (url) => {
+	const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
+		url.pathname.length);
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+	if (videoId) {
+		return `https://player.kick.com/${videoId}`;
+	}
 
-        const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-            this.url.pathname.length);
-
-        if (videoId) {
-            newUrl = `https://player.kick.com/${videoId}`;
-        }
-
-        return newUrl;
-    }
+	return url.href;
 }
 
-class Vidio {
-    constructor(url) {
-        this.url = url;
-    }
+const vidio = (url) => {
+	const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
+		url.pathname.length);
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+	if (videoId) {
+		if (url.href.indexOf("/watch/") > 0) {
+			return `https://www.vidio.com/embed/${videoId}?autoplay=true&player_only=true&mute=false`;
+		}
 
-        const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-            this.url.pathname.length);
+		if (url.href.indexOf("/live/") > 0) {
+			return `https://www.vidio.com/live/${videoId}/embed?autoplay=true&player_only=true&mute=false`;
+		}
+	}
 
-        if (videoId) {
-            if (this.url.href.indexOf("/watch/") > 0) {
-                newUrl = `https://www.vidio.com/embed/${videoId}?autoplay=true&player_only=true&mute=false`;
-            }
-            
-            if (this.url.href.indexOf("/live/") > 0) {
-                newUrl = `https://www.vidio.com/live/${videoId}/embed?autoplay=true&player_only=true&mute=false`;
-            }
-        }
-
-        return newUrl;
-    }
+	return url.href;
 }
