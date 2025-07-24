@@ -1,17 +1,9 @@
-class Vimeo {
-    constructor(url) {
-        this.url = url;
-    }
+const vimeo = (url) => {
+	const videoId = url.pathname.substring(1, url.pathname.length);
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+	if (videoId) {
+		return `https://player.vimeo.com/video/${videoId}?autoplay=1`;
+	}
 
-        const videoId = this.url.pathname.substring(1, this.url.pathname.length);
-
-        if (videoId) {
-            newUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1`;
-        }
-
-        return newUrl;
-    }
+	return url.href;
 }

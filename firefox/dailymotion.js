@@ -1,20 +1,12 @@
-class Dailymotion {
-    constructor(url) {
-        this.url = url;
-    }
+const dailymotion = (url) => {
+	if (url.href.indexOf('/video/') > 0) {
+		const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
+			url.pathname.length);
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+		if (videoId) {
+			return `https://www.dailymotion.com/embed/video/${videoId}?autoplay=1`;
+		}
+	}
 
-        if (this.url.href.indexOf('/video/')> 0) {
-            const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-                this.url.pathname.length);
-
-            if (videoId) {
-                newUrl = `https://www.dailymotion.com/embed/video/${videoId}?autoplay=1`;
-            }
-        }
-
-        return newUrl;
-    }
+	return url.href;
 }

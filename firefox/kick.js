@@ -1,18 +1,10 @@
-class Kick {
-    constructor(url) {
-        this.url = url;
-    }
+const kick = (url) => {
+	const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
+		url.pathname.length);
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+	if (videoId) {
+		return `https://player.kick.com/${videoId}`;
+	}
 
-        const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-            this.url.pathname.length);
-
-        if (videoId) {
-            newUrl = `https://player.kick.com/${videoId}`;
-        }
-
-        return newUrl;
-    }
+	return url.href;
 }

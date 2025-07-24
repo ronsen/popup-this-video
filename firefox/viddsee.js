@@ -1,20 +1,13 @@
-class Viddsee {
-    constructor(url) {
-        this.url = url;
-    }
+const viddsee = (url) => {
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+	if (url.href.indexOf('/video/') > 0) {
+		const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
+			url.pathname.length);
 
-        if (this.url.href.indexOf('/video/')> 0) {
-            const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-                this.url.pathname.length);
+		if (videoId) {
+			return `https://www.viddsee.com/player/${videoId}`;
+		}
+	}
 
-            if (videoId) {
-                newUrl = `https://www.viddsee.com/player/${videoId}`;
-            }
-        }
-
-        return newUrl;
-    }
+	return url.href;
 }

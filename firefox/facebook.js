@@ -1,15 +1,7 @@
-class Facebook {
-    constructor(url) {
-        this.url = url;
-    }
+const facebook = (url) => {
+	if (url.href.indexOf("/video/") > 0 || url.href.indexOf("/watch/") > 0) {
+		return 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(newUrl);
+	}
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
-
-        if (this.url.href.indexOf("/video/") > 0 || this.url.href.indexOf("/watch/") > 0) {
-            newUrl = 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(newUrl);
-        }
-        
-        return newUrl;
-    }
+	return url.href;
 }

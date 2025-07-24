@@ -1,24 +1,17 @@
-class Bilibili {
-    constructor(url) {
-        this.url = url;
-    }
+const bilibili = (url) => {
 
-    getPopupUrl() {
-        let newUrl = this.url.href;
+	const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1,
+		url.pathname.length);
 
-        const videoId = this.url.pathname.substring(this.url.pathname.lastIndexOf('/') + 1,
-            this.url.pathname.length);
+	if (videoId) {
+		if (url.href.indexOf("/video/") > 0) {
+			return `https://player.bilibili.com/player.html?bvid=${videoId}`;
+		}
 
-        if (videoId) {
-            if (this.url.href.indexOf("/video/") > 0) {
-                newUrl = `https://player.bilibili.com/player.html?bvid=${videoId}`;
-            }
+		if (url.href.indexOf("/live.bilibili.com/") > 0) {
+			return `https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=${videoId}`;
+		}
+	}
 
-            if (this.url.href.indexOf("/live.bilibili.com/") > 0) {
-                newUrl = `https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=${videoId}`;
-            }
-        }
-
-        return newUrl;
-    }
+	return url.href;
 }

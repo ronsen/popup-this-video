@@ -4,7 +4,22 @@ browser.contextMenus.create({
 	contexts: ["link"]
 });
 
+function init() {
+	const height = localStorage.getItem('height');
+
+	if (!height) {
+		localStorage.setItem('height', 400);
+	}
+
+	const width = localStorage.getItem('width');
+
+	if (!width) {
+		localStorage.setItem('width', 400);
+	}
+}
+
 function contextMenuAction(info) {
+	init();
 	popupThis(new URL(info.linkUrl));
 }
 
@@ -16,6 +31,7 @@ function openAction() {
 	});
 
 	activeTab.then((tabs) => {
+		init();
 		popupThis(new URL(tabs[0].url));
 	});
 }
@@ -23,59 +39,58 @@ function openAction() {
 browser.browserAction.onClicked.addListener(openAction);
 
 function popupThis(url) {
-	let popupUrl  = url.href;
+	let popupUrl = url.href;
 
-	if (url.href.indexOf("youtube.com") > 0) {
-		popupUrl = new YouTube(url).getPopupUrl();
-	}
-
-	if (url.href.indexOf("youtu.be") > 0) {
-		popupUrl = new YouTube(url).getPopupUrl();
+	if (url.href.indexOf("youtube.com") > 0 || url.href.indexOf("youtu.be") > 0) {
+		popupUrl = youtube(url);
 	}
 
 	if (url.href.indexOf("vimeo.com") > 0) {
-		popupUrl = new Vimeo(url).getPopupUrl();
+		popupUrl = vimeo(url);
 	}
 
 	if (url.href.indexOf("twitch.tv") > 0) {
-		popupUrl = new Twitch(url).getPopupUrl();
+		popupUrl = twitch(url);
 	}
 
 	if (url.href.indexOf("dailymotion.com") > 0) {
-		popupUrl = new Dailymotion(url).getPopupUrl();
+		popupUrl = dailymotion(url);
 	}
 
-    if (url.href.indexOf("viddsee.com") > 0) {
-		popupUrl = new Viddsee(url).getPopupUrl();
+	if (url.href.indexOf("viddsee.com") > 0) {
+		popupUrl = viddsee(url);
 	}
 
 	if (url.href.indexOf("bilibili.com") > 0) {
-		popupUrl = new Bilibili(url).getPopupUrl();
+		popupUrl = bilibili(url);
 	}
 
 	if (url.href.indexOf("odysee.com") > 0) {
-		popupUrl = new Odysee(url).getPopupUrl();
+		popupUrl = odysee(url);
 	}
 
 	if (url.href.indexOf("bitchute.com") > 0) {
-		popupUrl = new Bitchute(url).getPopupUrl();
+		popupUrl = bitchute(url);
 	}
 
 	if (url.href.indexOf("facebook.com") > 0) {
-		popupUrl = new Facebook(url).getPopupUrl();
+		popupUrl = facebook(url);
 	}
 
 	if (url.href.indexOf("kick.com") > 0) {
-		popupUrl = new Kick(url).getPopupUrl();
+		popupUrl = kick(url);
 	}
 
 	if (url.href.indexOf("vidio.com") > 0) {
-		popupUrl = new Vidio(url).getPopupUrl();
+		popupUrl = vidio(url);
 	}
 
+	const height = parseInt(localStorage.getItem('height'));
+	const width = parseInt(localStorage.getItem('width'));
+
 	chrome.windows.create({
-		height: 369,
-		width: 600,
+		height,
+		width,
 		state: "normal",
 		type: "popup",
 		url: popupUrl
