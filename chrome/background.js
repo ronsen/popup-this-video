@@ -61,7 +61,7 @@ chrome.contextMenus.onClicked.addListener((info) => {
 	}
 
 	chrome.windows.create({
-		height: 311,
+		height: 281,
 		width: 500,
 		state: "normal",
 		type: "popup",
