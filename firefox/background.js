@@ -4,23 +4,15 @@ browser.contextMenus.create({
 	contexts: ["link"]
 });
 
-function contextMenuAction(info) {
+browser.contextMenus.onClicked.addListener((info) => {
 	popupThis(new URL(info.linkUrl));
-}
+});
 
-browser.contextMenus.onClicked.addListener(contextMenuAction);
-
-function openAction() {
-	const activeTab = browser.tabs.query({
-		active: true, currentWindow: true
-	});
-
-	activeTab.then((tabs) => {
-		popupThis(new URL(tabs[0].url));
-	});
-}
-
-browser.browserAction.onClicked.addListener(openAction);
+browser.action.onClicked.addListener((tab) => {
+	if (tab?.url) {
+		popupThis(new URL(tab.url));
+	}
+});
 
 function popupThis(url) {
 	let popupUrl = url.href;

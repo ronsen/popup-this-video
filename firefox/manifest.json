@@ -1,9 +1,13 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "Popup This Video",
-	"version": "2.0.3",
+	"version": "3.0.0",
 	"description": "Popup any video from the right click menu",
-	"permissions": ["contextMenus", "tabs"],
+	"permissions": [
+		"contextMenus",
+		"tabs",
+		"activeTab"
+	],
 	"background": {
 		"scripts": [
 			"background.js",
@@ -20,10 +24,23 @@
 			"vidio.js"
 		]
 	},
-	"browser_action": {
+	"action": {
 		"default_icon": {
 			"16": "icons/icon-16x16.png",
 			"32": "icons/icon-32x32.png"
+		}
+	},
+	"host_permissions": [
+		"<all_urls>"
+	],
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "@ptv",
+			"data_collection_permissions": {
+				"required": [
+					"browsingActivity"
+				]
+			}
 		}
 	}
 }
