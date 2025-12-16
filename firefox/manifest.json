@@ -35,7 +35,7 @@
 	],
 	"browser_specific_settings": {
 		"gecko": {
-			"id": "@ptv",
+			"id": "{a4b40715-086a-4c24-b93a-e6b30a7f9448}",
 			"data_collection_permissions": {
 				"required": [
 					"browsingActivity"
